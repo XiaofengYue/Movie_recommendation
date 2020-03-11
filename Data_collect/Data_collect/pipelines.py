@@ -13,8 +13,8 @@ class DataCollectPipeline(object):
     def __init__(self, settings):
         self.settings = settings
         self.SQLInsert = '''
-            insert into info(id,title,pubdates,durations,genres,countries,image,summary)
-            values('{id}','{title}','{pubdates}','{durations}','{genres}','{countries}','{image}','{summary}')
+            insert into info(id,title,pubdates,durations,genres,countries,image,summary,star_five,star_four,star_three,star_two,star_one)
+            values('{id}','{title}','{pubdates}','{durations}','{genres}','{countries}','{image}','{summary}','{star_five}','{star_four}','{star_three}','{star_two}','{star_one}')
         '''
 
     @classmethod
@@ -49,6 +49,19 @@ class DataCollectPipeline(object):
                 genres=pymysql.escape_string(item['genres']),
                 countries=pymysql.escape_string(item['countries']),
                 image=pymysql.escape_string(item['image']),
-                summary=pymysql.escape_string(item['summary']))
-            self.cursor.execute(sqltext)
+                summary=pymysql.escape_string(item['summary']),
+                star_five=item['star_five'],
+                star_four=item['star_four'],
+                star_three=item['star_three'],
+                star_two=item['star_two'],
+                star_one=item['star_one'])
+            try:
+                self.cursor.execute(sqltext)
+            except pymysql.err.IntegrityError as f:
+                with open('err.log','a') as f:
+                    f.write('pymysql插入错误,错误ID:' + str(item['ID'])+',错误信息:'+str(f) +'\n')
+            else:
+                with open('err.log','a') as f:
+                    f.write('pymysql未知错误,错误ID:'+str(item['ID'])+',错误信息:'+str(f) +'\n')
+            
         return item
