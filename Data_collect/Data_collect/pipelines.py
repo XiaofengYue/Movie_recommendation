@@ -5,7 +5,7 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
-import pymysql
+import pymysql,time
 
 class DataCollectPipeline(object):
 
@@ -70,10 +70,12 @@ class DataCollectPipeline(object):
             self.cursor.execute(sqltext)
         except pymysql.err.IntegrityError as f:
             pass
-        #     with open('err.log','a') as f:
-        #         f.write('pymysql插入错误,错误ID:' + str(item['ID'])+',错误信息:'+str(f) +'\n')
-        # else:
-        #     with open('err.log','a') as f:
-        #         f.write('pymysql未知错误,错误ID:'+str(item['ID'])+',错误信息:'+str(f) +'\n')
+            with open('err.log','a') as f:
+                f.write(str(time.asctime( time.localtime(time.time()) )))
+                f.write('\npymysql插入错误,错误ID:' + str(item['ID'])+',错误信息:'+str(f) +'\n')
+        else:
+            with open('err.log','a') as f:
+                f.write(str(time.asctime( time.localtime(time.time()) )))
+                f.write('\npymysql未知错误,错误ID:'+str(item['ID'])+',错误信息:'+str(f) +'\n')
             
         return item

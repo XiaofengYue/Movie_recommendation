@@ -18,6 +18,7 @@ class Movie_ID(scrapy.spiders.Spider):
     name = 'movie_id'
 
 
+
     def start_requests(self):
         tags = ['电影','电视剧','综艺','动漫','纪录片','短片']
         genres = ['剧情','喜剧','动作','爱情','科幻','动画','悬疑','惊悚','恐怖','犯罪','同性','音乐','歌舞','传记','历史','战争','西部','奇幻','冒险','灾难','武侠','情色']
@@ -52,6 +53,8 @@ class Movie_ID(scrapy.spiders.Spider):
             print("genre:{},contry:{},start:{}".format(self.genre,self.country,self.start))
             with open('err.log','a') as f:
                 msg = content + "genre:{},contry:{},start:{}\n".format(self.genre,self.country,self.start)
+                f.write(str(time.asctime( time.localtime(time.time()) )))
+                msg = "\n" + str(content)+"contry:"+str(self.genre)+"start:"+str(self.start)+"\n"
                 f.write(msg)
             time.sleep(3)
             yield scrapy.Request(response.url,callback=self.getinfo)
