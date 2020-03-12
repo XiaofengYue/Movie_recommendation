@@ -1,7 +1,47 @@
 # -*- coding: UTF-8 -*-
 import scrapy
-import json,os,configparser
+import json,os,configparser,time
 from Data_collect.items import DataCollectItem
+
+class Movie_ID(scrapy.spiders.Spider):
+    name = 'movie_id'
+
+
+    def start_requests(self):
+        tags = ['电影','电视剧','综艺','动漫','纪录片','短片']
+        genres = ['剧情','喜剧','动作','爱情','科幻','动画','悬疑','惊悚','恐怖','犯罪','同性','音乐','歌舞','传记','历史','战争','西部','奇幻','冒险','灾难','武侠','情色']
+        countries = ['中国大陆','美国','中国香港','中国台湾','日本','韩国','英国','法国','德国','意大利','西班牙','印度','泰国','俄罗斯','伊朗','加拿大','澳大利亚','爱尔兰','瑞典','巴西','丹麦']
+        
+        for self.genre in genres:
+            for self.country in countries:
+                for self.start in range(0,10000,20):
+                    url = 'https://movie.douban.com/j/new_search_subjects?sort=T&range=0,10&tags={}&start={}&genres={}&countries={}'.format('电影',str(self.start),self.genre,self.country)
+                    yield scrapy.Request(url,callback=self.getinfo)
+        
+        # self.start=0
+        # for i in range(0,100,20):
+        #     url = 'https://movie.douban.com/j/new_search_subjects?sort=T&range=0,10&tags=%E7%94%B5%E5%BD%B1&start={}&genres=%E6%83%85%E8%89%B2&countries=%E4%B8%AD%E5%9B%BD%E5%A4%A7%E9%99%86'.format(str(i))
+        #     yield scrapy.Request(url,callback=self.getinfo)
+
+    def getinfo(self, response):
+        content = json.loads(response.body_as_unicode())
+
+        if 'data' in content:
+            data = content['data']
+            for info in data:
+                item = DataCollectItem()
+                item['ID'] = int(info['id'])
+                item['title'] = info['title']
+                item['casts'] = ",".join(info['casts'])
+                item['directors'] = ",".join(info['directors'])
+                yield item
+        else:
+            print(content)
+            print("genre:{},contry:{},start:{}".format(self.genre,self.country,self.start))
+            time.sleep(3600*3)
+
+
+
 
 class All_Movies(scrapy.spiders.Spider):
     name = 'all_movies'
@@ -12,10 +52,10 @@ class All_Movies(scrapy.spiders.Spider):
         conf.read(CONFIG_FILE)
 
         #根据文件中的ID爬取数据
-        num = int(conf.get("movies","txt_number"))
-        with open("ID/"+str(num)+'.txt') as f:
-            li = f.read().split('\n')
-            start_urls = ["https://douban.uieee.com/v2/movie/subject/"+str(i) for i in li]
+        # num = int(conf.get("movies","txt_number"))
+        # with open("ID/"+str(num)+'.txt') as f:
+        #     li = f.read().split('\n')
+        #     start_urls = ["https://douban.uieee.com/v2/movie/subject/"+str(i) for i in li]
 
         # 根据ID递增爬取
         # s_id = int(conf.get("movies","end_id"))

@@ -19,6 +19,8 @@ class DataCollectItem(scrapy.Item):
     countries = scrapy.Field()
     image = scrapy.Field()
     summary = scrapy.Field()
+    directors = scrapy.Field()
+    casts = scrapy.Field()
 
     star_five = scrapy.Field()
     star_four = scrapy.Field()

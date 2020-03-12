@@ -7,7 +7,6 @@
 
 import pymysql
 
-
 class DataCollectPipeline(object):
 
     def __init__(self, settings):
@@ -15,6 +14,10 @@ class DataCollectPipeline(object):
         self.SQLInsert = '''
             insert into info(id,title,pubdates,durations,genres,countries,image,summary,star_five,star_four,star_three,star_two,star_one)
             values('{id}','{title}','{pubdates}','{durations}','{genres}','{countries}','{image}','{summary}','{star_five}','{star_four}','{star_three}','{star_two}','{star_one}')
+        '''
+        self.idInsert = '''
+            insert into info(id,title,casts,directors)
+            values('{id}','{title}','{casts}','{directors}')
         '''
 
     @classmethod
@@ -40,6 +43,14 @@ class DataCollectPipeline(object):
         self.connect.close()
 
     def process_item(self, item, spider):
+        if spider.name == "movie_id":
+            sqltext = self.idInsert.format(
+                id=item['ID'],
+                title=pymysql.escape_string(item['title']),
+                casts=pymysql.escape_string(item['casts']),
+                directors=pymysql.escape_string(item['directors']),
+            )
+
         if spider.name == "all_movies":
             sqltext = self.SQLInsert.format(
                 id=item['ID'],
@@ -55,13 +66,13 @@ class DataCollectPipeline(object):
                 star_three=item['star_three'],
                 star_two=item['star_two'],
                 star_one=item['star_one'])
-            try:
-                self.cursor.execute(sqltext)
-            except pymysql.err.IntegrityError as f:
-                with open('err.log','a') as f:
-                    f.write('pymysql插入错误,错误ID:' + str(item['ID'])+',错误信息:'+str(f) +'\n')
-            else:
-                with open('err.log','a') as f:
-                    f.write('pymysql未知错误,错误ID:'+str(item['ID'])+',错误信息:'+str(f) +'\n')
+        try:
+            self.cursor.execute(sqltext)
+        except pymysql.err.IntegrityError as f:
+            with open('err.log','a') as f:
+                f.write('pymysql插入错误,错误ID:' + str(item['ID'])+',错误信息:'+str(f) +'\n')
+        else:
+            with open('err.log','a') as f:
+                f.write('pymysql未知错误,错误ID:'+str(item['ID'])+',错误信息:'+str(f) +'\n')
             
         return item
