@@ -49,6 +49,8 @@ class Movie_ID(scrapy.spiders.Spider):
         else:
             print(content)
             print("genre:{},contry:{},start:{}".format(self.genre,self.country,self.start))
+            time.sleep(3)
+            yield scrapy.Request(response.url,callback=self.getinfo)
             # time.sleep(3600*3)
 
 
