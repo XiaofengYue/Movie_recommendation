@@ -69,10 +69,11 @@ class DataCollectPipeline(object):
         try:
             self.cursor.execute(sqltext)
         except pymysql.err.IntegrityError as f:
-            with open('err.log','a') as f:
-                f.write('pymysql插入错误,错误ID:' + str(item['ID'])+',错误信息:'+str(f) +'\n')
-        else:
-            with open('err.log','a') as f:
-                f.write('pymysql未知错误,错误ID:'+str(item['ID'])+',错误信息:'+str(f) +'\n')
+            pass
+        #     with open('err.log','a') as f:
+        #         f.write('pymysql插入错误,错误ID:' + str(item['ID'])+',错误信息:'+str(f) +'\n')
+        # else:
+        #     with open('err.log','a') as f:
+        #         f.write('pymysql未知错误,错误ID:'+str(item['ID'])+',错误信息:'+str(f) +'\n')
             
         return item
