@@ -54,7 +54,7 @@ ROBOTSTXT_OBEY = False
 # Configure a delay for requests for the same website (default: 0)
 # See https://doc.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = random.randint(3,7)
+DOWNLOAD_DELAY = random.randint(10,15)
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
@@ -82,7 +82,7 @@ DOWNLOAD_DELAY = random.randint(3,7)
 DOWNLOADER_MIDDLEWARES = {
    # 'Data_collect.middlewares.DataCollectDownloaderMiddleware': 400,
    # 'Data_collect.middlewares.ipMiddleware':543,
-   'Data_collect.middlewares.ProxyMiddleware':543
+   # 'Data_collect.middlewares.ProxyMiddleware':543
 }
 
 # Enable or disable extensions
