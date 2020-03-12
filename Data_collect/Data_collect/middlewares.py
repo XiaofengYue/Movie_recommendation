@@ -6,13 +6,44 @@
 # https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
+import base64,random
 
+
+# 代理服务器
+proxyServer = "http://http-dyn.abuyun.com:9020"
+
+# 代理隧道验证信息
+proxyUser = "HO12J96402982JED"
+proxyPass = "660CFFB358957D1A"
+
+# for Python2
+# proxyAuth = "Basic " + base64.b64encode(proxyUser + ":" + proxyPass)
+
+# for Python3
+proxyAuth = "Basic " + base64.urlsafe_b64encode(bytes((proxyUser + ":" + proxyPass), "ascii")).decode("utf8")
+
+class ProxyMiddleware(object):
+    def process_request(self, request, spider):
+        request.meta["proxy"] = proxyServer
+
+        request.headers["Proxy-Authorization"] = proxyAuth              
+            
+
+
+class ipMiddleware(object):
+
+    IPPOOL = []
+
+    def process_request(self, request, spider):
+        print('进来了进来了')
+        proxy = random.choice(self.IPPOOL)
+        request.meta['proxy'] = proxy
 
 class DataCollectSpiderMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
     # scrapy acts as if the spider middleware does not modify the
     # passed objects.
-
+    
     @classmethod
     def from_crawler(cls, crawler):
         # This method is used by Scrapy to create your spiders.

@@ -3,6 +3,17 @@ import scrapy
 import json,os,configparser,time
 from Data_collect.items import DataCollectItem
 
+
+class test_ip(scrapy.spiders.Spider):
+    name = 'ip'
+    allowed_domains = ['httpbin.org']
+    start_urls = ['https://httpbin.org/ip']
+
+    def parse(self, response):
+        origin = json.loads(response.text)['origin']
+        print(origin)
+        yield scrapy.Request(self.start_urls[0])
+
 class Movie_ID(scrapy.spiders.Spider):
     name = 'movie_id'
 
@@ -38,7 +49,7 @@ class Movie_ID(scrapy.spiders.Spider):
         else:
             print(content)
             print("genre:{},contry:{},start:{}".format(self.genre,self.country,self.start))
-            time.sleep(3600*3)
+            # time.sleep(3600*3)
 
 
 
