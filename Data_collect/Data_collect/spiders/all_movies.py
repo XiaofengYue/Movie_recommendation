@@ -4,6 +4,21 @@ import json,os,configparser,time
 from Data_collect.items import DataCollectItem
 
 
+
+
+# 测试ip的
+class test_ip(scrapy.spiders.Spider):
+    name = 'ip'
+    allowed_domains = ['httpbin.org']
+    start_urls = ['https://httpbin.org/ip']*30
+
+    def parse(self, response):
+        origin = json.loads(response.text)['origin']
+        print(origin)
+        with open('ID/ips.txt','a') as f:
+            f.write(str(origin) + '\n')
+        yield scrapy.Request(self.start_urls[0])
+
 # 获得top250的电影id 依次获得评论用户的ID
 class Get_top250ID(scrapy.spiders.Spider):
     name = 'top250id'

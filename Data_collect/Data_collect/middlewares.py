@@ -7,8 +7,7 @@
 
 from scrapy import signals
 import base64,random
-
-
+import requests
 # 代理服务器
 proxyServer = "http://http-dyn.abuyun.com:9020"
 
@@ -30,8 +29,6 @@ class ProxyMiddleware(object):
         #print('进来了进来了')
         #print(request.headers["Proxy-Authorization"])
         #print(request.url)
-
-
 
 class ipMiddleware(object):
 

@@ -71,12 +71,12 @@ ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 # 设置线程数量
-# CONCURRENT_REQUESTS = 6
+# CONCURRENT_REQUESTS = 2
 
 # Configure a delay for requests for the same website (default: 0)
 # See https://doc.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY =  0.2#random.randint(5,7)
+ DOWNLOAD_DELAY =  0.2#random.randint(5,7)
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
@@ -104,7 +104,8 @@ DOWNLOAD_DELAY =  0.2#random.randint(5,7)
 DOWNLOADER_MIDDLEWARES = {
    # 'Data_collect.middlewares.DataCollectDownloaderMiddleware': 400,
    # 'Data_collect.middlewares.ipMiddleware':543,
-    'Data_collect.middlewares.ProxyMiddleware':543
+    'Data_collect.middlewares.ProxyMiddleware':1,
+   # 'Data_collect.middlewares.IPMiddleware':400,
 }
 
 # Enable or disable extensions
@@ -121,9 +122,9 @@ ITEM_PIPELINES = {
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html
-#AUTOTHROTTLE_ENABLED = True
+AUTOTHROTTLE_ENABLED = True
 # The initial download delay
-#AUTOTHROTTLE_START_DELAY = 5
+AUTOTHROTTLE_START_DELAY = 0.2
 # The maximum download delay to be set in case of high latencies
 #AUTOTHROTTLE_MAX_DELAY = 60
 # The average number of requests Scrapy should be sending in parallel to
