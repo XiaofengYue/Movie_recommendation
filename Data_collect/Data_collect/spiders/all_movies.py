@@ -4,15 +4,18 @@ import json,os,configparser,time
 from Data_collect.items import DataCollectItem
 
 
-class Get_UserID(scrapy.spiders.Spider):
-    name = 'userid'
-    cookies={'cookie':'douban-fav-remind=1; douban-profile-remind=1; _vwo_uuid_v2=D4BEEC156A416D3DBF7DCEC30CD6EEF09|e36d57937d07928f12b3f112e162573f; gr_user_id=c702c0f7-31ab-44d4-8ca4-2193f6b4a7a3; bid=_IQuumecNtk; viewed="19970032_30236304_6798611_3674537_5299764_5252677_26927702_30140436_26163454_1102259"; ll="108310"; push_noty_num=0; push_doumail_num=0; __utmv=30149280.12160; __utmc=30149280; dbcl2="121600284:9iGbJa0EuZU"; ck=HxYc; __utmz=30149280.1583909870.11.7.utmcsr=baidu|utmccn=(organic)|utmcmd=organic; _pk_ref.100001.8cb4=%5B%22%22%2C%22%22%2C1584075389%2C%22https%3A%2F%2Fwww.baidu.com%2Flink%3Furl%3DGePqGTgQy3ge1-KtAT6jt6Zk5ZoEX8_O2Iah0NPfxNpyG_yACFr_lkLfk5AHhXOamXY2IZbGxqEVq0NgqXtpWK%26wd%3D%26eqid%3Dd36919e70006461d000000035e6614b7%22%5D; _pk_ses.100001.8cb4=*; ap_v=0,6.0; __utma=30149280.1830171042.1583331055.1584002571.1584075389.14; __utmt=1; __utmb=30149280.2.10.1584075389; _pk_id.100001.8cb4=d247c006175a3b1e.1535352166.29.1584075393.1584002579.'}
-    start_urls = ['https://httpbin.org/ip']
-
+# 获得top250的电影id 依次获得评论用户的ID
+class Get_top250ID(scrapy.spiders.Spider):
+    name = 'top250id'
+    # cookies={'cookie':'douban-fav-remind=1; douban-profile-remind=1; _vwo_uuid_v2=D4BEEC156A416D3DBF7DCEC30CD6EEF09|e36d57937d07928f12b3f112e162573f; gr_user_id=c702c0f7-31ab-44d4-8ca4-2193f6b4a7a3; bid=_IQuumecNtk; viewed="19970032_30236304_6798611_3674537_5299764_5252677_26927702_30140436_26163454_1102259"; ll="108310"; push_noty_num=0; push_doumail_num=0; __utmv=30149280.12160; __utmc=30149280; dbcl2="121600284:9iGbJa0EuZU"; ck=HxYc; __utmz=30149280.1583909870.11.7.utmcsr=baidu|utmccn=(organic)|utmcmd=organic; _pk_ref.100001.8cb4=%5B%22%22%2C%22%22%2C1584075389%2C%22https%3A%2F%2Fwww.baidu.com%2Flink%3Furl%3DGePqGTgQy3ge1-KtAT6jt6Zk5ZoEX8_O2Iah0NPfxNpyG_yACFr_lkLfk5AHhXOamXY2IZbGxqEVq0NgqXtpWK%26wd%3D%26eqid%3Dd36919e70006461d000000035e6614b7%22%5D; _pk_ses.100001.8cb4=*; ap_v=0,6.0; __utma=30149280.1830171042.1583331055.1584002571.1584075389.14; __utmt=1; __utmb=30149280.2.10.1584075389; _pk_id.100001.8cb4=d247c006175a3b1e.1535352166.29.1584075393.1584002579.'}
+    start_urls = ['https://movie.douban.com/top250?start={}&filter='.format(str(i)) for i in range(0,250,25)]
     def parse(self, response):
-        origin = json.loads(response.text)['origin']
-        print(origin)
-        yield scrapy.Request(self.start_urls[0])
+        for i in range(1,26):
+            path = '/html/body/div[3]/div[1]/div/div[1]/ol/li[{}]/div/div[2]/div[1]/a/@href'.format(str(i))
+            info = response.xpath(path)
+            #print(info.get().split('/')[-2])
+            with open("ID/top250.txt",'a') as f:
+                f.write(str(info.get().split('/')[-2])+"\n")
 
 class Movie_ID(scrapy.spiders.Spider):
     name = 'movie_id'
