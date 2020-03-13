@@ -80,9 +80,9 @@ class Movie_ID(scrapy.spiders.Spider):
             with open('err.log','a') as f:
                 #msg = content + "genre:{},contry:{},start:{}\n".format(self.genre,self.country,self.start)
                 f.write(str(time.asctime( time.localtime(time.time()) )))
-                msg = "\n" + str(content)+"contry:"+str(self.genre)+"start:"+str(self.start)+"\n"
+                msg = "\n" + str(content)+"contry:"+str(self.country)+"start:"+str(self.start)+"\n"
                 f.write(msg)
-            time.sleep(60*60)
+            # time.sleep(60*60)
             yield scrapy.Request(response.url,callback=self.getinfo)
             # time.sleep(3600*3)
 

@@ -10,11 +10,11 @@ import base64,random
 
 
 # 代理服务器
-proxyServer = "http://http-pro.abuyun.com:9010"
+proxyServer = "http://http-dyn.abuyun.com:9020"
 
 # 代理隧道验证信息
-proxyUser = "HCPSI1H4230GF70P"
-proxyPass = "002343CF68F2096E"
+proxyUser = "HO12J96402982JED"
+proxyPass = "660CFFB358957D1A"
 
 # for Python2
 # proxyAuth = "Basic " + base64.b64encode(proxyUser + ":" + proxyPass)
