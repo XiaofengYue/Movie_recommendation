@@ -101,10 +101,9 @@ class All_Movies(scrapy.spiders.Spider):
 
         #根据文件中的ID爬取数据
         num = int(conf.get("movies","txt_number"))
-        for num_i in range(1,num):
-            with open("ID/"+str(num_i)+'.txt') as f:
-                li = f.read().split('\n')
-                start_urls = ["https://douban.uieee.com/v2/movie/subject/"+str(i) for i in li]
+        with open("ID/"+str(num)+'.txt') as f:
+            li = f.read().split('\n')
+            start_urls = ["https://douban.uieee.com/v2/movie/subject/"+str(i) for i in li]
 
         #根据ID递增爬取
         # s_id = int(conf.get("movies","end_id"))
@@ -134,7 +133,7 @@ class All_Movies(scrapy.spiders.Spider):
         item['countries'] = ",".join(content['countries'])
 
         # item['directors'] = ",".join(content['directors'])
-        # item['casts'] = ",".join(content['casts'])
+        #item['casts'] = ",".join(content['casts'])
 
         item['image'] = content['images']['small']
         item['summary'] = content['summary'].replace('\n','').replace('\r','').replace('\r\n','')
