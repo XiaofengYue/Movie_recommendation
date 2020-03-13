@@ -17,6 +17,27 @@ class Get_top250ID(scrapy.spiders.Spider):
             with open("ID/top250.txt",'a') as f:
                 f.write(str(info.get().split('/')[-2])+"\n")
 
+class Get_userid(scrapy.spiders.Spider):
+    name = 'userid'
+
+    def start_requests(self):
+        self.cookies={'cookie':'douban-fav-remind=1; douban-profile-remind=1; _vwo_uuid_v2=D4BEEC156A416D3DBF7DCEC30CD6EEF09|e36d57937d07928f12b3f112e162573f; gr_user_id=c702c0f7-31ab-44d4-8ca4-2193f6b4a7a3; bid=_IQuumecNtk; viewed="19970032_30236304_6798611_3674537_5299764_5252677_26927702_30140436_26163454_1102259"; ll="108310"; push_noty_num=0; push_doumail_num=0; __utmv=30149280.12160; __utmc=30149280; __utmc=223695111; dbcl2="121600284:9iGbJa0EuZU"; ck=HxYc; __utmz=30149280.1584080242.15.8.utmcsr=baidu|utmccn=(organic)|utmcmd=organic; ap_v=0,6.0; __utmz=223695111.1584090328.22.9.utmcsr=baidu|utmccn=(organic)|utmcmd=organic; _pk_ref.100001.4cf6=%5B%22%22%2C%22%22%2C1584094102%2C%22https%3A%2F%2Fwww.baidu.com%2Flink%3Furl%3DKtt8IZWmfLUXBBj0PKk_Cn89SdozSHJpCyZVv-JY74KNfWK3PXTeFjLQbHI_GqzP%26wd%3D%26eqid%3De39e5bad00011c9d000000035e6b4cd2%22%5D; _pk_ses.100001.4cf6=*; __utma=30149280.1830171042.1583331055.1584089716.1584094103.18; __utma=223695111.2063370518.1563330093.1584090328.1584094103.23; __utmb=223695111.0.10.1584094103; _pk_id.100001.4cf6=9815f69abf1acafb.1563330092.23.1584094123.1584091056.; __utmt=1; __utmb=30149280.6.10.1584094103'}
+        with open('ID/top250.txt','r')as f:
+            sub_ids = f.read().split('\n')
+            for sub_id in sub_ids:
+                for i in range(0,500,20):
+                    url = 'https://movie.douban.com/subject/{}/comments?start={}&limit=20&sort=new_score&status=P'.format(str(sub_id),str(i))
+                    yield scrapy.Request(url,callback=self.get_user_id,cookies=self.cookies)
+
+    def get_user_id(self, response):
+        with open('ID/users.txt','a') as f:
+            for i in range(1,21):
+                path = '/html/body/div[3]/div[1]/div/div[1]/div[4]/div[{}]/div[1]/a/@href'.format(str(i))
+                info = response.xpath(path)
+                f.write(str(info.get()+"\n"))
+
+                
+
 class Movie_ID(scrapy.spiders.Spider):
     name = 'movie_id'
 

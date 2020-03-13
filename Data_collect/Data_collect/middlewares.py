@@ -27,7 +27,10 @@ class ProxyMiddleware(object):
         request.meta["proxy"] = proxyServer
 
         request.headers["Proxy-Authorization"] = proxyAuth              
-            
+        #print('进来了进来了')
+        #print(request.headers["Proxy-Authorization"])
+        #print(request.url)
+
 
 
 class ipMiddleware(object):
