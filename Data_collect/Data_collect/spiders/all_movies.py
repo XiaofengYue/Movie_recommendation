@@ -1,16 +1,90 @@
 # -*- coding: UTF-8 -*-
 import scrapy
-import json,os,configparser,time
-from Data_collect.items import DataCollectItem
+import json,os,configparser,time,math
+from Data_collect.items import DataCollectItem,UserItem,RateItem
 
 
+class get_user_info(scrapy.spiders.Spider):
+    name = 'rate'
+    page = 0
+    cookies = {'cookies':'douban-fav-remind=1; douban-profile-remind=1; _vwo_uuid_v2=D4BEEC156A416D3DBF7DCEC30CD6EEF09|e36d57937d07928f12b3f112e162573f; gr_user_id=c702c0f7-31ab-44d4-8ca4-2193f6b4a7a3; bid=_IQuumecNtk; viewed="19970032_30236304_6798611_3674537_5299764_5252677_26927702_30140436_26163454_1102259"; ll="108310"; push_noty_num=0; push_doumail_num=0; __utmv=30149280.12160; __utmc=30149280; dbcl2="121600284:9iGbJa0EuZU"; ck=HxYc; __utmz=30149280.1584080242.15.8.utmcsr=baidu|utmccn=(organic)|utmcmd=organic; ct=y; ap_v=0,6.0; __utma=30149280.1830171042.1583331055.1584099878.1584108523.20; _pk_ref.100001.8cb4=%5B%22%22%2C%22%22%2C1584113041%2C%22https%3A%2F%2Fmovie.douban.com%2Fsubject%2F1292052%2Fcomments%3Fstatus%3DP%22%5D; _pk_ses.100001.8cb4=*; __utmt=1; _pk_id.100001.8cb4=d247c006175a3b1e.1535352166.35.1584113309.1584109304.; __utmb=30149280.20.10.1584108523'}
+    def start_requests(self):
+        # yield scrapy.Request('https://www.douban.com/people/66825432/',callback=self.user_info,cookies=self.cookies)
+        with open('ID/users2.txt','r') as f:
+            li = f.read().split('\n')
+            for l in li:
+                url = 'https://movie.douban.com/people/' + str(l.split('/')[-2])+'/collect?start=0&sort=time&rating=all&filter=all&mode=grid'
+                self.page=0
+                self.userid = str(l.split('/')[-2])
+                yield scrapy.Request(url,callback=self.rate,cookies=self.cookies)
+    
+    # def user_info(self,response):
+    #     msg = str(response.xpath('/html/body/div[3]/div[1]/div/div[2]/div[1]/div/div[2]/div[1]/div/div').get())
+    #     item = UserItem()
+    #     item['time']  = msg.split(' <br> ')[1].split('加入')[0]
+    #     item['ID']  = msg.split(' <br> ')[0].split('"pl">')[1]
+    #     item['image']  = response.xpath('/html/body/div[3]/div[1]/div/div[2]/div[1]/div/div[2]/div[1]/img/@src').get()
+    #     item['name'] = item['ID']
+    #     yield item
+    #     url = 'https://movie' + str(response.url.split('www')[1]) + '/collect?start=0&sort=time&rating=all&filter=all&mode=grid'
+    #     self.page=0
+    #     yield scrapy.Request(url=url,callback=self.rate,cookies=self.cookies)
+    
+    def rate(self, response):
+        self.num = int(response.xpath('/html/body/div[3]/div[1]/div[2]/div[1]/div[1]/div[3]/span').get().split('/')[1].split('\n')[0].strip())
+        _ = self.num
+        if self.num > (self.page+1)*15:
+            _ = 15
+        # print('目前的num:'+str(self.num))
+        # print(_)
+
+        for i in range(1,16):
+            r = response.xpath('/html/body/div[3]/div[1]/div[2]/div[1]/div[2]/div[{}]/div[2]/ul/li[3]/span[1]/@class'.format(str(i))).get()
+            print(response.url)
+            print(i)
+            print('rate = :'+str(r))
+            
+            if r!= None and 'rating' in r:
+                m = response.xpath('/html/body/div[3]/div[1]/div[2]/div[1]/div[2]/div[{}]/div[2]/ul/li[1]/a/@href'.format(str(i))).get()
+                m = int(m.split('/')[-2])
+                r = int(r.split('rating')[1][0])
+                item = RateItem()
+                item['user_id'] = self.userid
+                item['movie_id'] = m
+                item['star'] = r
+                yield item
+        for self.page in range(1,math.ceil(self.num/15)):
+            url = response.url.split('&sort=time&')[0].split('start=')[0] + 'start=' +str(self.page*15) + '&sort=time&' + response.url.split('&sort=time&')[1]
+            yield scrapy.Request(url=url, callback=self.rate_next,cookies=self.cookies)
+    
+    def rate_next(self, response):
+        # print(response.url)
+        _ = 15
+        if self.num < (self.page+1)*15:
+            _ = self.num - self.page*15
+        # print('目前的num:'+str(self.num))
+        # print(_)
+        for i in range(1,16):
+            r = response.xpath('/html/body/div[3]/div[1]/div[2]/div[1]/div[2]/div[{}]/div[2]/ul/li[3]/span[1]/@class'.format(str(i))).get()
+            print(response.url)
+            print(i)
+            print('rate = :'+str(r))
+            if r!= None and 'rating' in r:
+                m = response.xpath('/html/body/div[3]/div[1]/div[2]/div[1]/div[2]/div[{}]/div[2]/ul/li[1]/a/@href'.format(str(i))).get()
+                m = int(m.split('/')[-2])
+                r = int(r.split('rating')[1][0])
+                item = RateItem()
+                item['user_id'] = response.url.split('/people/')[1].split('/')[0]
+                item['movie_id'] = m
+                item['star'] = r
+                yield item
 
 
 # 测试ip的
 class test_ip(scrapy.spiders.Spider):
     name = 'ip'
     allowed_domains = ['httpbin.org']
-    start_urls = ['https://httpbin.org/ip']*30
+    start_urls = ['https://httpbin.org/ip']*3
 
     def parse(self, response):
         origin = json.loads(response.text)['origin']

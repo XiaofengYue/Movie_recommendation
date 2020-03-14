@@ -32,7 +32,7 @@ class ProxyMiddleware(object):
 
 class ipMiddleware(object):
 
-    IPPOOL = []
+    IPPOOL = ['https://120.85.101.48']
 
     def process_request(self, request, spider):
         print('进来了进来了')

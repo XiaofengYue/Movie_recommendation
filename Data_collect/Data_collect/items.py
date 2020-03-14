@@ -27,3 +27,15 @@ class DataCollectItem(scrapy.Item):
     star_three = scrapy.Field()
     star_two = scrapy.Field()
     star_one = scrapy.Field()
+
+class UserItem(scrapy.Item):
+    ID = scrapy.Field()
+    name = scrapy.Field()
+    genres = scrapy.Field()
+    image = scrapy.Field()
+    time = scrapy.Field()
+
+class RateItem(scrapy.Item):
+    user_id = scrapy.Field()
+    movie_id = scrapy.Field()
+    star = scrapy.Field()
