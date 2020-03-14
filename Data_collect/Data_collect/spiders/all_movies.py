@@ -53,7 +53,7 @@ class get_user_info(scrapy.spiders.Spider):
                 item['movie_id'] = m
                 item['star'] = r
                 yield item
-        for self.page in range(1,math.ceil(self.num/15)):
+        for self.page in range(1,3): #正确的应该是math.ceil(self.num/15)
             url = response.url.split('&sort=time&')[0].split('start=')[0] + 'start=' +str(self.page*15) + '&sort=time&' + response.url.split('&sort=time&')[1]
             yield scrapy.Request(url=url, callback=self.rate_next,cookies=self.cookies)
     
