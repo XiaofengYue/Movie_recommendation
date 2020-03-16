@@ -5,6 +5,6 @@ with open('users.txt','r') as f:
     x2 = list(set(x))
     print(len(x2))
 
-with open('users2.txt','a') as f:
+with open('users3.txt','a') as f:
     x = '\n'.join(x2)
     f.write(x)

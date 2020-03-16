@@ -7,12 +7,12 @@ from Data_collect.items import DataCollectItem,UserItem,RateItem
 class get_user_info(scrapy.spiders.Spider):
     name = 'rate'
     page = 0
-    cookies = {'cookies':'douban-fav-remind=1; douban-profile-remind=1; _vwo_uuid_v2=D4BEEC156A416D3DBF7DCEC30CD6EEF09|e36d57937d07928f12b3f112e162573f; gr_user_id=c702c0f7-31ab-44d4-8ca4-2193f6b4a7a3; bid=_IQuumecNtk; viewed="19970032_30236304_6798611_3674537_5299764_5252677_26927702_30140436_26163454_1102259"; ll="108310"; push_noty_num=0; push_doumail_num=0; __utmv=30149280.12160; __utmc=30149280; __utmz=30149280.1584080242.15.8.utmcsr=baidu|utmccn=(organic)|utmcmd=organic; ct=y; ps=y; dbcl2="121600284:XgQNJ/RwiQ8"; ck=NdXI; _pk_ref.100001.8cb4=%5B%22%22%2C%22%22%2C1584236884%2C%22https%3A%2F%2Fmovie.douban.com%2Fsubject%2F1292052%2Fcomments%3Fstatus%3DP%22%5D; _pk_id.100001.8cb4=d247c006175a3b1e.1535352166.37.1584236884.1584152563.; _pk_ses.100001.8cb4=*; ap_v=0,6.0; __utma=30149280.1830171042.1583331055.1584150074.1584236888.23; __utmt=1; __utmb=30149280.2.10.1584236888'}
+    cookies = {'cookies':'douban-fav-remind=1; douban-profile-remind=1; _vwo_uuid_v2=D4BEEC156A416D3DBF7DCEC30CD6EEF09|e36d57937d07928f12b3f112e162573f; gr_user_id=c702c0f7-31ab-44d4-8ca4-2193f6b4a7a3; bid=_IQuumecNtk; viewed="19970032_30236304_6798611_3674537_5299764_5252677_26927702_30140436_26163454_1102259"; ll="108310"; push_noty_num=0; push_doumail_num=0; __utmv=30149280.12160; __utmz=30149280.1584080242.15.8.utmcsr=baidu|utmccn=(organic)|utmcmd=organic; ct=y; ps=y; _pk_ref.100001.8cb4=%5B%22%22%2C%22%22%2C1584335861%2C%22https%3A%2F%2Fmovie.douban.com%2Fsubject%2F1292052%2Fcomments%3Fstatus%3DP%22%5D; _pk_ses.100001.8cb4=*; __utma=30149280.1830171042.1583331055.1584236888.1584335863.24; __utmc=30149280; __utmt=1; dbcl2="121600284:XgQNJ/RwiQ8"; ck=NdXI; _pk_id.100001.8cb4=d247c006175a3b1e.1535352166.38.1584335872.1584236899.; ap_v=0,6.0; __utmb=30149280.3.10.1584335863'}
     def start_requests(self):
         # yield scrapy.Request('https://www.douban.com/people/66825432/',callback=self.user_info,cookies=self.cookies)
         with open('ID/users2.txt','r') as f:
             li = f.read().split('\n')
-            for l in li:
+            for l in li: 
                 url = 'https://movie.douban.com/people/' + str(l.split('/')[-2])+'/collect?start=0&sort=time&rating=all&filter=all&mode=grid'
                 self.page=0
                 self.userid = str(l.split('/')[-2])
