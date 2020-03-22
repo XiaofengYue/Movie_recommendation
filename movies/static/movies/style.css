@@ -1,0 +1,53 @@
+
+.long .abox,.long .drama{ float:left; width:706px;}
+.long .nbox,.long .tvnews{ float:right; width:270px;}
+
+.upimg li{ float:left; margin-left:10px; display:inline; height:148px; position:relative;}
+.upimg li img{ width:100px; height:133px; padding:1px; border:1px solid #d9d9d9; }
+.upimg li span{ position:absolute; bottom:13px; right:2px; color:#FFF; height:15px; line-height:15px;
+background:url(/img/site/bglist.png) repeat-x; width:30px; text-align:center; }
+.upimg li .recom{ background-position: 0 -31px; text-indent:-9999px;}
+.upimg li .hdtv{ background-position: -31px -31px; text-indent:-9999px;}
+.upimg li .uping{background:#000; filter:alpha(opacity=80); -moz-opacity:0.8; opacity:0.8; width:100px; height:18px;
+line-height:18px;}
+.uplist li{ width:218px; float:left; margin-left:10px; line-height:26px; display:inline;}
+.uplist li span{ color:#a9a9a9; padding-left:7px;}
+.uplist li a{ padding-left:20px; line-height:26px; display:inline-block;}
+.uplist li a:link,.uplist li a:visited{ background:url(/img/site/mark.png) no-repeat 0 -145px;}
+.uplist li a:hover,.uplist li a:active{ background-position:0 -119px; }
+.hot-recom { position:relative;}
+.hot-recom .abd{ padding:20px 0 1px 5px;}
+.hot-recom .titlerecom{ position:absolute; right:60px; top:14px;}
+.hot-recom .titlerecom li{ float:left; font-size:0; width:10px; height:10px; text-indent:-9999px;cursor:pointer;
+background:#d6d6d6; margin-right:6px;}
+.hot-recom .titlerecom li.current{ background:#9f9f9f;}
+.hot-recom .upimg li{ text-align:center; height:181px;}
+.hot-recom .upimg li p{ height:32px; line-height:32px; width:100px;}
+.boxrecom{ height:362px; overflow:hidden;}
+.aggress{ position:relative;}
+.aggress .nbd{ padding:0 1px 9px 1px;}
+.aggress .titleagg,.aggress .titlehot{ position:absolute; right:14px; top:12px; border:1px solid #2e96f1;}
+.aggress .titleagg li,.aggress .titlehot li{ width:65px; height:20px; float:left; line-height:20px; text-align:center;
+color:#2e96f1; cursor:pointer;}
+.aggress .titleagg li.current,.aggress .titlehot li.current{ background:#2e96f1; color:#FFF;}
+.boxagg,.boxhot{ height:364px; overflow:hidden;}
+.namelist li{line-height:26px; height:26px; padding-left:15px;}
+.namelist li span{ float:right; padding-right:14px; color:#bfbfbf;}
+.namelist li a{ background:url(/img/site/num.png) no-repeat; display:inline-block; height:26px; line-height:26px;
+padding-left:28px; width:105px; overflow:hidden;}
+.long .namelist li a{ width:125px;}
+.namelist .li01 a{ background-position: 0 0;}
+.namelist .li02 a{ background-position: 0 -25px;}
+.namelist .li03 a{ background-position: 0 -51px;}
+.namelist .li04 a{ background-position: 0 -77px;}
+.namelist .li05 a{ background-position: 0 -103px;}
+.namelist .li06 a{ background-position: 0 -129px;}
+.namelist .li07 a{ background-position: 0 -155px;}
+.namelist .li08 a{ background-position: 0 -181px;}
+.namelist .li09 a{ background-position: 0 -207px;}
+.namelist .li10 a{ background-position: 0 -233px;}
+.namelist .li11 a{ background-position: 0 -259px;}
+.namelist .li12 a{ background-position: 0 -285px;}
+.namelist .li13 a{ background-position: 0 -311px;}
+.namelist .li14 a{ background-position: 0 -337px;}
+.namelist .li15 a{ background-position: 0 -363px;}
