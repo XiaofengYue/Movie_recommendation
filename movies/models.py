@@ -134,6 +134,7 @@ class Info(models.Model):
     star_one = models.IntegerField()
     casts = models.CharField(max_length=255, blank=True, null=True)
     directors = models.CharField(max_length=255, blank=True, null=True)
+    objects = models.Manager()
 
     class Meta:
         managed = False
@@ -164,6 +165,7 @@ class Rate(models.Model):
     user_id = models.CharField(max_length=255, blank=True, null=True)
     movie_id = models.IntegerField(blank=True, null=True)
     star = models.IntegerField(blank=True, null=True)
+    objects = models.Manager()
 
     class Meta:
         managed = False
@@ -176,6 +178,10 @@ class User(models.Model):
     genres = models.CharField(max_length=255, blank=True, null=True)
     image = models.CharField(max_length=255, blank=True, null=True)
     time = models.CharField(max_length=255, blank=True, null=True)
+    password = models.CharField(max_length=255,null=False, default='123456')
+    email = models.CharField(max_length=255, blank=True, null=True)
+    gender = models.CharField(max_length=255, blank=True, null=True)
+    objects = models.Manager()
 
     class Meta:
         managed = False

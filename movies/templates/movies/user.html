@@ -1,0 +1,115 @@
+{% extends 'movies/base.html' %}
+{% load static %}
+{% load my_tag %}
+{% block title %}搜索{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'movies/css/login.css' %}">
+    <link rel="apple-touch-icon"
+		href="https://img3.doubanio.com/f/movie/d59b2715fdea4968a450ee5f6c95c7d7a2030065/pics/movie/apple-touch-icon.png">
+	<link href="https://img3.doubanio.com/f/shire/52c9997d6d42db58eab418e976a14d5f3eff981e/css/douban.css"
+		rel="stylesheet" type="text/css">
+	<link href="https://img3.doubanio.com/f/shire/ae3f5a3e3085968370b1fc63afcecb22d3284848/css/separation/_all.css"
+		rel="stylesheet" type="text/css">
+	<link href="https://img3.doubanio.com/f/movie/8864d3756094f5272d3c93e30ee2e324665855b0/css/movie/base/init.css"
+		rel="stylesheet">
+	<script type="text/javascript">
+		var _head_start = new Date();
+	</script>
+	<script type="text/javascript"
+		src="https://img3.doubanio.com/f/movie/0495cb173e298c28593766009c7b0a953246c5b5/js/movie/lib/jquery.js">
+	</script>
+	<script type="text/javascript"
+		src="https://img3.doubanio.com/f/shire/1316664523258f7b8b536e4ce45afc9cb37b8963/js/douban.js"></script>
+	<script type="text/javascript"
+		src="https://img3.doubanio.com/f/shire/0efdc63b77f895eaf85281fb0e44d435c6239a3f/js/separation/_all.js"></script>
+	<link href="https://img3.doubanio.com/f/movie/2c95f768ea74284b900c04c0209b0a44f0a0de52/css/movie/top_movies.css"
+		rel="stylesheet" type="text/css" />
+	<script type="text/javascript"
+		src="https://img3.doubanio.com/f/shire/77323ae72a612bba8b65f845491513ff3329b1bb/js/do.js"
+		data-cfg-autoload="false"></script>
+	<script type='text/javascript'>
+		Do.ready(function () {
+			$("#mine-selector input[type='checkbox']").click(function () {
+				var val = $(this).is(":checked") ? $(this).val() : "";
+				window.location.href = '/top250?filter=' + val;
+			})
+		})
+	</script>
+	<style type="text/css">
+		.site-nav-logo img {
+			margin-bottom: 0;
+		}
+	</style>
+	<style type="text/css">
+		img {
+			max-width: 100%;
+		}
+	</style>
+	<script type="text/javascript"></script>
+	<link rel="stylesheet" href="https://img3.doubanio.com/misc/mixed_static/562925b5e3824700.css">
+	<link rel="shortcut icon" href="https://img3.doubanio.com/favicon.ico" type="image/x-icon">
+{% endblock %}
+
+
+{% block content %}
+<div id="wrapper">
+    <div id="content">
+        <h1>已评价的电影</h1>
+        <div class="grid-16-8 clearfix">
+            <div class="article">
+
+
+                <ol class="grid_view">
+
+
+                    {% for movie in data %}
+                    <li>
+                        <div class="item">
+                            <div class="pic">
+                                <em class="">{{ forloop.counter }}</em>
+                                <a href="{% url 'movies:detail' movie.info.id %}">
+                                    <img width="100" alt="图片" src= "{{ movie.info.image }}" class="">
+                                </a>
+                            </div>
+                            <div class="info">
+                                <div class="hd">
+                                    <a href="{% url 'movies:detail' movie.info.id %}" class="">
+                                        <span class="title">{{movie.info.title}}</span>
+                                    </a>
+                                </div>
+                                <div class="bd">
+                                    <p class="">
+                                        时长&nbsp;&nbsp;&nbsp;{{movie.info.durations}}<br>
+                                        上映时间&nbsp;&nbsp;{{movie.info.pubdates}}<br>
+                                        种类&nbsp;&nbsp;{{movie.info.genres}}
+                                    </p>
+                                    <div class="star">
+                                        <span class= "{% starround movie.info.star_five movie.info.star_four movie.info.star_three movie.info.star_two movie.info.star_one %}" ></span>
+                                        <span class="rating_num" property="v:average">{% startag movie.info.star_five movie.info.star_four movie.info.star_three movie.info.star_two movie.info.star_one %}</span>
+                                        <span property="v:best" content="10.0"></span>
+                                        
+                                        <br>
+                                        <br>
+                                        你的评价&nbsp;<span class= "rating{{movie.star}}-t" ></span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+
+
+                </ol>
+                
+            </div>
+
+            <div class="extra">
+            </div>
+        </div>
+    </div>
+    <div id="footer">
+        <div class="footer-extra"></div>
+    </div>
+</div>
+{% endblock %}

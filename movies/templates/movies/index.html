@@ -1,94 +1,125 @@
-{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+    <meta charset="UTF-8" />
+    <meta name="referrer" content="never">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<style>
+			* {
+        margin: 0;
+        padding: 0;
+      }
+      li {
+        list-style-type: none;
+      }
+      body,
+      html {
+        height: 100%;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+      }
+      header {
+        height: 40px;
+        background-color: green;
+        display: flex;
+        justify-content: center;
+      }
+      header > .content {
+        display: flex;
+        justify-content: space-between;
+        width: 800px;
+        margin: 0 auto;
+      }
+      div.body {
+        display: flex;
+        flex: 1;
+        justify-content:center;
+      }
+      main {
+        display: flex;
+        width: 800px;
+      }
+      main > .content {
+        display: flex;
+        flex: 1;
+        height: 100%;
+        background-color: blue;
+      }
+      main > aside {
+        width: 200px;
+        background-color: orange;
+        padding: 20px;
+      }
+      main > .content {
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+      .content > .card {
+        width: 100px;
+        height: 150px;
+        padding: 10px;
+      }
+
+      .card > a > img {
+        display: block;
+        width: 100px;
+        height: 100px;
+        background-color: red;
+      }
+      .card > .disc {
+        color: #fff;
+        text-align: center;
+      }
+    </style>
+	</head>
+	<body>
+		<header>
+			<div class="content">
+				<div class="search">
+					<input type="text" placeholder="Search" />
+				</div>
+				<nav class="menu">
+					<button>注册</button>
+					<button>登录</button>
+				</nav>
+			</div>
+		</header>
+		<div class="body">
+			<main>
+				<div class="content">
+        {% if infos %}
+          {% for info in infos %}
+					<div class="card">
+            <a href="{% url 'movies:detail' info.id %}">
+            <img src="{{ info.image }}" alt="图片" />
+            </a>
+						<div class="disc">
+              {{ info.title }}
+            </div>
+          </div>
+          {% endfor %}
+        {% endif %}
+				</div>
+				<aside>
+					<ul>
+              <li>近期热门影片</li>
+            {% if topten %}
+              {% for i in topten %}
+              <li>
+                <a href="{% url 'movies:detail' i.id %}">{{ forloop.counter }}.{{ i.title }}</a>
+              </li>
+              {% endfor %}
+            {% endif %}
+					</ul>
+				</aside>
+			</main>
+		</div>
+
+	</body>
+</html>
 
 
-<head>
-	<meta charset="gb2312" />
-	<meta http-equiv="x-ua-compatible" content="ie=7" />
-	<title>2020最新电影_好看的电影排行榜西瓜影音在线观看 - 天狼影视</title>
-	<meta name="keywords" content="2020最新电影,最新电影,电影排行榜,西瓜影音,好看的电影,天狼影视" />
-	<meta content="天狼影视第一时间为广大用户提供2020最新电影，最新好看的电影电视剧排行榜西瓜影音免费在线观看，2020更新最快的西瓜影音电影电视剧网站!" name="description" />
-    <link rel="stylesheet" type="text/css" href="{% static 'movies/style.css' %}">
-	
-</head>
-
-
-<div class="long">
-	<div class="abox hot-recom">
-		<div class="ahd"><span><a href="/dy/" target="_blank">2020最新电影</a></span>
-			<h1>电影</h1>
-		</div>
-		<div class="abd">
-			<ul class="upimg">
-				<li><a href="/dy/dy1/xilieguaishouqujialasi/"><img title="系列怪兽区加拉斯" alt="系列怪兽区加拉斯" src="https://pic.xintexin.cn/uploadimg/2020-3/202032111313632930.jpg"
-						 style="border-color: rgb(217, 217, 217);"></a>
-					<p><a href="/dy/dy1/xilieguaishouqujialasi/" title="系列怪兽区加拉斯">系列怪兽区加拉斯</a></p>
-				</li>
-				<li><a href="/dy/dy5/yinxingjia2020/"><img title="银行家2020" alt="银行家2020" src="https://pic.xintexin.cn/uploadimg/2020-3/202032111265618983.jpg"
-						 style="border-color: rgb(217, 217, 217);"></a>
-					<p><a href="/dy/dy5/yinxingjia2020/" title="银行家2020">银行家2020</a></p>
-				</li>
-				<li><a href="/dy/dy1/tianhuo2019/"><img title="天火2019" alt="天火2019" src="https://pic.xintexin.cn/uploadimg/2019-12/20191213117024291.jpg"
-						 style="border-color: rgb(217, 217, 217);"></a>
-					<p><a href="/dy/dy1/tianhuo2019/" title="天火2019">天火2019</a></p>
-				</li>
-				<li><a href="/dy/dy5/baolieshike/"><img title="爆裂时刻" alt="爆裂时刻" src="https://pic.xintexin.cn/uploadimg/2020-3/202032110474420204.jpg"
-						 style="border-color: rgb(217, 217, 217);"></a>
-					<p><a href="/dy/dy5/baolieshike/" title="爆裂时刻">爆裂时刻</a></p>
-				</li>
-				<li><a href="/dy/dy2/dayingjia2020/"><img title="大赢家2020" alt="大赢家2020" src="https://pic.xintexin.cn/uploadimg/2020-3/202032021415763634.jpg"
-						 style="border-color: rgb(217, 217, 217);"></a>
-					<p><a href="/dy/dy2/dayingjia2020/" title="大赢家2020">大赢家2020</a></p>
-				</li>
-				<li><a href="/dy/dy5/yanchixiashengxiaoshenjiang/"><img title="燕赤霞生肖神将" alt="燕赤霞生肖神将" src="https://pic.xintexin.cn/uploadimg/2020-3/20203201820264453.jpg"
-						 style="border-color: rgb(217, 217, 217);"></a>
-					<p><a href="/dy/dy5/yanchixiashengxiaoshenjiang/" title="燕赤霞生肖神将">燕赤霞生肖神将</a></p>
-				</li>
-				<li><a href="/dy/dy4/jiezhantai/"><img title="饥饿站台" alt="饥饿站台" src="https://pic.xintexin.cn/uploadimg/2020-3/202032018153287966.jpg"
-						 style="border-color: rgb(217, 217, 217);"></a>
-					<p><a href="/dy/dy4/jiezhantai/" title="饥饿站台">饥饿站台</a></p>
-				</li>
-				<li><a href="/dy/dy6/shoulie2020/"><img title="狩猎2020" alt="狩猎2020" src="https://pic.xintexin.cn/uploadimg/2020-3/202032017274877902.jpg"
-						 style="border-color: rgb(217, 217, 217);"></a>
-					<p><a href="/dy/dy6/shoulie2020/" title="狩猎2020">狩猎2020</a></p>
-				</li>
-				<li><a href="/dy/dy2/aima/"><img title="爱玛" alt="爱玛" src="https://pic.xintexin.cn/uploadimg/2020-3/20203201716590371.jpg"
-						 style="border-color: rgb(217, 217, 217);"></a>
-					<p><a href="/dy/dy2/aima/" title="爱玛">爱玛</a></p>
-				</li>
-				<li><a href="/dy/dy6/yinxingren2020/"><img title="隐形人2020" alt="隐形人2020" src="https://pic.xintexin.cn/uploadimg/2020-3/2020320173233922.jpg"
-						 style="border-color: rgb(217, 217, 217);"></a>
-					<p><a href="/dy/dy6/yinxingren2020/" title="隐形人2020">隐形人2020</a></p>
-				</li>
-				<li><a href="/dy/dy2/banluqiangshou/"><img title="半路枪手" alt="半路枪手" src="https://pic.xintexin.cn/uploadimg/2020-3/202032012135486927.jpg"></a>
-					<p><a href="/dy/dy2/banluqiangshou/" title="半路枪手">半路枪手</a></p>
-				</li>
-				<li><a href="/dy/dy5/qimendunjia2020/"><img title="奇门遁甲2020" alt="奇门遁甲2020" src="https://pic.xintexin.cn/uploadimg/2020-3/20203200242152055.jpg"></a>
-					<p><a href="/dy/dy5/qimendunjia2020/" title="奇门遁甲2020">奇门遁甲2020</a></p>
-				</li>
-			</ul>
-		</div>
-	</div>
-	<div class="nbox aggress">
-		<div class="nhd"><span><a href="/MvHit.html" target="_blank">更多</a></span>
-			<h1>电影排行榜</h1>
-		</div>
-		<div class="nbd">
-			<ul class="namelist">
-				<li class="li01"><span>科幻/2020</span><a href="/dy/dy4/mosikexianluo2/">莫斯科陷落2</a></li>
-				<li class="li02"><span>动作/2020</span><a href="/dy/dy1/rulaishenzhang2020/">如来神掌2020</a></li>
-				<li class="li03" style="background: none;"><span>剧情/2020</span><a href="/dy/dy5/qimendunjia2020/">奇门遁甲2020</a></li>
-				<li class="li04" style="background: none;"><span>科幻/2020</span><a href="/dy/dy4/yijie2020/">异界2020</a></li>
-				<li class="li05" style="background: none;"><span>喜剧/20</span><a href="/dy/dy2/zhanzhuxiaotou/">站住！小偷</a></li>
-				<li class="li06" style="background: none;"><span>动作/2020</span><a href="/dy/dy1/mingxinpianshalu/">明信片杀戮</a></li>
-				<li class="li07" style="background: none;"><span>喜剧/2020</span><a href="/dy/dy2/shendaoyuchuniang/">神刀御厨娘</a></li>
-				<li class="li08" style="background: none;"><span>恐怖/2020</span><a href="/dy/dy6/sangshimori/">丧尸末日</a></li>
-				<li class="li09"><span>动作/2020</span><a href="/dy/dy1/zhengyigongtang/">正义公堂</a></li>
-				<li class="li10"><span>剧情/2020</span><a href="/dy/dy5/qicheweixiuzhan/">汽车维修站</a></li>
-				<li class="li11"><span>爱情/2020</span><a href="/dy/dy3/huokoudeliangren/">火口的两人</a></li>
-				<li class="li12"><span>动作/2020</span><a href="/dy/dy1/mingyingzixiluo/">命硬仔西罗</a></li>
-				<li class="li13"><span>喜剧/2020</span><a href="/dy/dy2/dayingjia2020/">大赢家2020</a></li>
-				<li class="li14"><span>动作/2020</span><a href="/dy/dy1/fenghuiluzhuan/">峰回路转</a></li>
-			</ul>
-		</div>
-	</div>
-</div>

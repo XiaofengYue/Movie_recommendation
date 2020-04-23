@@ -20,4 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('polls/', include('polls.urls')),
     path('movies/', include('movies.urls')),
+    path('captcha', include('captcha.urls')),  # 增加这一行
 ]

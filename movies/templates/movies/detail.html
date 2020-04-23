@@ -1,0 +1,251 @@
+{% extends 'movies/base.html' %}
+{% load static %}
+{% block title %}登录{% endblock %}
+{% block css %}{% endblock %}
+{% block content %}
+{% endblock %}
+
+<html lang="zh-cmn-Hans" class="ua-mac ua-webkit">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		
+        <meta name="referrer" content="never">
+		<meta name="google-site-verification" content="ok0wCgT20tBBgo9_zat2iAcimtN4Ftf5ccsh092Xeyw" />
+		<title>
+			{{ info.title }}
+		</title>
+
+		<meta name="baidu-site-verification" content="cZdR4xxR7RxmM4zE" />
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Expires" content="Sun, 6 Mar 2005 01:00:00 GMT">
+
+		<link rel="apple-touch-icon" href="https://img3.doubanio.com/f/movie/d59b2715fdea4968a450ee5f6c95c7d7a2030065/pics/movie/apple-touch-icon.png">
+		<link href="https://img3.doubanio.com/f/shire/3e5dfc68b0f376484c50cf08a58bbca3700911dc/css/douban.css" rel="stylesheet"
+		 type="text/css">
+		<link href="https://img3.doubanio.com/f/shire/ae3f5a3e3085968370b1fc63afcecb22d3284848/css/separation/_all.css" rel="stylesheet"
+		 type="text/css">
+		<link href="https://img3.doubanio.com/f/movie/8864d3756094f5272d3c93e30ee2e324665855b0/css/movie/base/init.css" rel="stylesheet">
+		<script type="text/javascript">
+			var _head_start = new Date();
+		</script>
+		<script type="text/javascript" src="https://img3.doubanio.com/f/movie/0495cb173e298c28593766009c7b0a953246c5b5/js/movie/lib/jquery.js"></script>
+		<script type="text/javascript" src="https://img3.doubanio.com/f/shire/5ecaf46d6954d5a30bc7d99be86ae34031646e00/js/douban.js"></script>
+		<script type="text/javascript" src="https://img3.doubanio.com/f/shire/0efdc63b77f895eaf85281fb0e44d435c6239a3f/js/separation/_all.js"></script>
+
+		<meta name="mobile-agent" content="format=html5; url=http://m.douban.com/movie/subject/30182726/" />
+		<link rel="alternate" href="android-app://com.douban.movie/doubanmovie/subject/30182726/" />
+		<link rel="stylesheet" href="https://img3.doubanio.com/dae/cdnlib/libs/LikeButton/1.0.5/style.min.css">
+		<script type="text/javascript" src="https://img3.doubanio.com/f/shire/77323ae72a612bba8b65f845491513ff3329b1bb/js/do.js"
+		 data-cfg-autoload="false"></script>
+		<script type="text/javascript">
+			Do.add('dialog', {
+				path: 'https://img3.doubanio.com/f/shire/383a6e43f2108dc69e3ff2681bc4dc6c72a5ffb0/js/ui/dialog.js',
+				type: 'js'
+			});
+			Do.add('dialog-css', {
+				path: 'https://img3.doubanio.com/f/shire/8377b9498330a2e6f056d863987cc7a37eb4d486/css/ui/dialog.css',
+				type: 'css'
+			});
+			Do.add('handlebarsjs', {
+				path: 'https://img3.doubanio.com/f/movie/3d4f8e4a8918718256450eb6e57ec8e1f7a2e14b/js/movie/lib/handlebars.current.js',
+				type: 'js'
+			});
+		</script>
+
+
+		<style type="text/css">
+
+		</style>
+		<style type="text/css">
+			img {
+				max-width: 100%;
+			}
+		</style>
+		<script type="text/javascript"></script>
+		<link rel="stylesheet" href="https://img3.doubanio.com/misc/mixed_static/55df131343dc0375.css">
+
+		<link rel="shortcut icon" href="https://img3.doubanio.com/favicon.ico" type="image/x-icon">
+	</head>
+
+	<body>
+		<div class="article">
+			<div class="indent clearfix">
+				<!-- 电影总详情 -->
+				<div class="subjectwrap clearfix">
+					<!-- 海报及其电影详情 -->
+					<div class="subject clearfix">
+						<!-- 海报图片 -->
+						<div id="mainpic" class="">
+								<img src="{{ info.image }}" title="点击看更多海报" alt="{{ info.title }}"
+								 rel="v:image">
+						</div>
+						<!-- 电影详情 -->
+						<div id="info">
+							<span><span class="pl">名称</span>: <span class="attrs">{{ info.title }}</span></span><br>
+                            <span></span><br>
+                            <span class="pl">类型:</span> 
+                                {% for genre in genres %}
+                                <span property="v:genre">{{genre}}</span> / 
+                                {% endfor %}
+                                <br>
+                            <span></span><br>
+                            <span class="pl">制片国家/地区:</span> {{ info.countries }}<br>
+                            <span></span><br>
+							<span class="pl">上映日期:</span> <span property="v:initialReleaseDate" content="{{ info.pubdates }}">{{ info.pubdates }}</span><br>
+                            <span></span><br>
+                            <span class="pl">片长:</span> <span property="v:runtime" content="{{info.durations}}">{{info.durations}}</span><br>
+
+						</div>
+					</div>
+					<!-- 评分总列表 -->
+					<div id="interest_sectl">
+						<div class="rating_wrap clearbox" rel="v:rating">
+		
+							<!-- 电影评分 -->
+							<div class="clearfix">
+								<div class="rating_logo ll">电影评分</div>
+								<!-- 引用 -->
+								<!-- <div class="output-btn-wrap rr" style="">
+									<img src="https://img3.doubanio.com/f/movie/692e86756648f29457847c5cc5e161d6f6b8aaac/pics/movie/reference.png">
+									<a class="download-output-image" href="#">引用</a>
+								</div> -->
+							</div>
+
+							<!-- 电影评分星级图片和分数 -->
+							<div class="rating_self clearfix" typeof="v:Rating">
+								<strong class="ll rating_num" property="v:average">{{aver}}</strong>
+								<span property="v:best" content="10.0"></span>
+								<div class="rating_right ">
+									<!-- 评星的数量 -->
+									<div class="ll bigstar bigstar{{bigstar}}"></div>
+									<!-- 评价人数 -->
+									<div class="rating_sum">
+											<span property="v:votes">{{rating_sum}}</span>人评价
+									</div>
+								</div>
+							</div>
+							
+							<!-- 星级评价 -->
+							<div class="ratings-on-weight">
+								<!-- 五星 -->
+								<div class="item">
+									<span class="stars5 starstop" title="力荐">
+										5星
+									</span>
+									<div class="power" style="width:{{five}}px"></div>
+									<span class="rating_per">{{info.star_five}}</span>
+									<br>
+								</div>
+								<!-- 四星 -->
+								<div class="item">
+									<span class="stars4 starstop" title="推荐">
+										4星
+									</span>
+									<div class="power" style="width:{{four}}px"></div>
+									<span class="rating_per">{{info.star_four}}</span>
+									<br>
+								</div>
+								<!-- 三星 -->
+								<div class="item">
+									<span class="stars3 starstop" title="还行">
+										3星
+									</span>
+									<div class="power" style="width:{{three}}px"></div>
+									<span class="rating_per">{{info.star_three}}</span>
+									<br>
+								</div>
+								<!-- 二星 -->
+								<div class="item">
+									<span class="stars2 starstop" title="较差">
+										2星
+									</span>
+									<div class="power" style="width:{{two}}px"></div>
+									<span class="rating_per">{{info.star_two}}</span>
+									<br>
+								</div>
+								<!-- 一星 -->
+								<div class="item">
+									<span class="stars1 starstop" title="很差">
+										1星
+									</span>
+									<div class="power" style="width:{{one}}px"></div>
+									<span class="rating_per">{{info.star_one}}</span>
+									<br>
+								</div>
+							</div>
+
+						</div>
+
+						<!-- <div class="rating_betterthan">
+							好于 <a href="/typerank?type_name=惊悚&amp;type=19&amp;interval_id=75:65&amp;action=">70% 惊悚片</a><br>
+							好于 <a href="/typerank?type_name=动作&amp;type=5&amp;interval_id=70:60&amp;action=">68% 动作片</a><br>
+						</div> -->
+					</div>
+				</div>
+				<!-- 自己评价列表 -->
+				<div id="interest_sect_level" class="clearfix">
+
+					<a href="https://movie.douban.com/subject/30182726/?interest=wish&amp;ck=NdXI" rel="nofollow" class="collect_btn colbutt ll"
+					 name="pbtn-30182726-wish">
+						<span>想看</span>
+					</a>
+					<a href="https://movie.douban.com/subject/30182726/?interest=collect&amp;ck=NdXI" rel="nofollow" class="collect_btn colbutt ll"
+					 name="pbtn-30182726-collect">
+						<span>看过</span>
+					</a>
+					<div class="ll j a_stars">
+						评价:
+						<span id="rating"> <span id="stars" data-solid="https://img3.doubanio.com/f/shire/5a2327c04c0c231bced131ddf3f4467eb80c1c86/pics/rating_icons/star_onmouseover.png"
+							 data-hollow="https://img3.doubanio.com/f/shire/2520c01967207a1735171056ec588c8c1257e5f8/pics/rating_icons/star_hollow_hover.png"
+							 data-solid-2x="https://img3.doubanio.com/f/shire/7258904022439076d57303c3b06ad195bf1dc41a/pics/rating_icons/star_onmouseover@2x.png"
+							 data-hollow-2x="https://img3.doubanio.com/f/shire/95cc2fa733221bb8edd28ad56a7145a5ad33383e/pics/rating_icons/star_hollow_hover@2x.png">
+
+								<a href="javascript:;" class="btnclick" name="pbtn-30182726-collect-1">
+									<img src="https://img3.doubanio.com/f/shire/2520c01967207a1735171056ec588c8c1257e5f8/pics/rating_icons/star_hollow_hover.png"
+                                     id="star1" width="16" height="16"></a>
+                                     
+								<a href="javascript:;" class="btnclick" name="pbtn-30182726-collect-2">
+									<img src="https://img3.doubanio.com/f/shire/2520c01967207a1735171056ec588c8c1257e5f8/pics/rating_icons/star_hollow_hover.png"
+									 id="star2" width="16" height="16"></a>
+								<a href="javascript:;" class="btnclick" name="pbtn-30182726-collect-3">
+									<img src="https://img3.doubanio.com/f/shire/2520c01967207a1735171056ec588c8c1257e5f8/pics/rating_icons/star_hollow_hover.png"
+									 id="star3" width="16" height="16"></a>
+								<a href="javascript:;" class="btnclick" name="pbtn-30182726-collect-4">
+									<img src="https://img3.doubanio.com/f/shire/2520c01967207a1735171056ec588c8c1257e5f8/pics/rating_icons/star_hollow_hover.png"
+									 id="star4" width="16" height="16"></a>
+								<a href="javascript:;" class="btnclick" name="pbtn-30182726-collect-5">
+									<img src="https://img3.doubanio.com/f/shire/2520c01967207a1735171056ec588c8c1257e5f8/pics/rating_icons/star_hollow_hover.png"
+                                     id="star5" width="16" height="16"></a>
+
+							</span><span id="rateword" class="pl"></span>
+							<input id="n_rating" type="hidden" value="">
+						</span>
+
+					</div>
+
+
+				</div>
+			<!-- 简介 -->
+			<div class="related-info" style="margin-bottom:-10px;">
+				<a name="intro"></a>
+
+				<h2>
+					<i class="">{{info.title}}的剧情简介</i>
+					· · · · · ·
+				</h2>
+
+				<div class="indent" id="link-report">
+
+					<span property="v:summary" class="">
+						　　{{info.summary}}
+					</span>
+
+					<script type="text/javascript" src="https://img3.doubanio.com/f/shire/a14501790b4a2db257dc5be5e37d820e600703c6/js/report_dialog.js"></script>
+					<link rel="stylesheet" type="text/css" href="https://img3.doubanio.com/f/shire/b45aa277f8b8df40596b96582dafb1ed0a899a64/css/report_dialog.css">
+
+					<div class="report" style="visibility: hidden;"><a rel="nofollow" href="javascript:void(0)">举报</a></div>
+				</div>
+			</div>
+
+</body>
+

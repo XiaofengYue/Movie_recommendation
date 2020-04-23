@@ -1,0 +1,110 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="referrer" content="never">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>{% block title %}主页{% endblock %}</title>
+
+    <!-- Bootstrap -->
+    <link href="{% static 'movies/bootstrap-3.3.7-dist/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    {% block css %}
+    <link rel="stylesheet" href="{% static 'movies/css/index.css' %}">
+    {% endblock %}
+  </head>
+  <body>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#my-nav" aria-expanded="false">
+            <span class="sr-only">切换导航条</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Mysite</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="my-nav">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="{% url 'movies:index' %}">主页</a></li>
+          </ul>
+          {% if infos %}
+          <form class="navbar-form navbar-left" action="search" method="post">
+            <div class="form-group">
+              <input type="text" name="keyword" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-default">搜索</button>
+          </form>
+          {% endif %}
+          <ul class="nav navbar-nav navbar-right">
+            {% if request.session.is_login %}
+                <li><a href="{% url 'movies:user' request.session.user_id %}">当前在线：{{ request.session.user_name }}</a></li>
+                <li><a href="{% url 'movies:logout' %}">登出</a></li>
+            {% else %}
+                <li><a href="{% url 'movies:login' %}">登录</a></li>
+                <li><a href="{% url 'movies:register' %}">注册</a></li>
+            {% endif %}
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+
+    {% block content %}
+    {% if request.session.is_login %}
+    {% else %}
+    <h1>你尚未登录，只能进行非个性化推荐！</h1>
+    {% endif %}
+
+    <div class="body">
+        <main>
+            <div class="content">
+    {% if infos %}
+      {% for info in infos %}
+                <div class="card">
+        <a href="{% url 'movies:detail' info.id %}">
+        <img src="{{ info.image }}" alt="图片" />
+        </a>
+                    <div class="disc">
+          {{ info.title }}
+        </div>
+      </div>
+      {% endfor %}
+    {% endif %}
+            </div>
+            <aside>
+                <ul>
+          <li>近期热门影片</li>
+        {% if topten %}
+          {% for i in topten %}
+          <li>
+            <a href="{% url 'movies:detail' i.id %}">{{ forloop.counter }}.{{ i.title }}</a>
+          </li>
+          {% endfor %}
+        {% endif %}
+                </ul>
+            </aside>
+        </main>
+    </div>
+    {% endblock %}
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="{% static 'movies/js/jquery-3.3.1.js' %}"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{% static 'movies/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
+  </body>
+</html>
