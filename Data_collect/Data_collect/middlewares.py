@@ -9,11 +9,11 @@ from scrapy import signals
 import base64,random
 import requests
 # 代理服务器
-proxyServer = "http://http-dyn.abuyun.com:9020"
+proxyServer = "http://http-pro.abuyun.com:9010"
 
 # 代理隧道验证信息
-proxyUser = "HC29O5BL21I9554D"
-proxyPass = "60C8EA8C4E5BB0BE"
+proxyUser = "H6146P5F9LV60N1P"
+proxyPass = "49CBF5041C1BF296"
 
 # for Python2
 # proxyAuth = "Basic " + base64.b64encode(proxyUser + ":" + proxyPass)
