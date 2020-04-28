@@ -103,9 +103,9 @@ DOWNLOAD_DELAY =  0.2#random.randint(5,7)
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-   # 'Data_collect.middlewares.DataCollectDownloaderMiddleware': 400,
+   'Data_collect.middlewares.DataCollectDownloaderMiddleware': 400,
    # 'Data_collect.middlewares.ipMiddleware':543,
-    'Data_collect.middlewares.ProxyMiddleware':1,
+   #  'Data_collect.middlewares.ProxyMiddleware':1,
    # 'Data_collect.middlewares.IPMiddleware':400,
 }
 

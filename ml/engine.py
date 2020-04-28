@@ -7,7 +7,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.metrics import pairwise_distances
 
 settings = {
-    'engine_name':'db',
+    'engine_name':'movielens',
     'movie_data':'movies.csv',
     'rating_data':'ratings.csv',
 
