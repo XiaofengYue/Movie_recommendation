@@ -5,7 +5,29 @@ import math, json
 # 导入数据
 from .models import Info,User,Rate
 from .form import UserForm,RegisterForm
-from ml.engine import UserCF_DB
+# from ml.engine import UserCF_DB
+
+##########################################################################################
+from ml.test import load_data,create_movie_dic,create_user_user_dic,get_n_nearest_nei,create_user_item_matrix
+from ml.test import cal_user_similarity, recommend
+data = None
+movie_dic = None
+u_u_dic = None
+u_nerest_k = None
+user_item_matrix = None
+
+def start(k_nei):
+    global data, movie_dic, u_u_dic, u_nearest_k, user_item_matrix
+    data = load_data()
+    movie_dic = create_movie_dic(data)
+    u_u_dic = create_user_user_dic(movie_dic)
+    u_nearest_k = get_n_nearest_nei(u_u_dic, k=k_nei)
+    user_item_matrix = create_user_item_matrix(data)
+
+start(1)
+##########################################################################################
+
+
 # Create your views here.
 
 # 主界面
@@ -14,12 +36,13 @@ def index(request):
                 'topten': Info.objects.all()[:10]}
     #已经登录
     if request.session.get('is_login',None):
-    #     print('主界面推荐内容')
-    #     data = []
-    #     print(request.session['recommend_list'])
-    #     for i in request.session['recommend_list']:
-    #         data.append(Info.objects.get(id=i))
-        context['infos'] = Info.objects.all().order_by('-star_four')[:12]
+        print('主界面推荐内容')
+        data = []
+        print(request.session['recommend_list'] )
+        for i in request.session['recommend_list']:
+            data.append(Info.objects.get(id=i))
+        context['infos'] = data
+        # context['infos'] = Info.objects.all().order_by('-star_four')[:12]
     return render(request, 'movies/base.html',context)    
 
 # 电影信息详情
@@ -104,6 +127,7 @@ def rate(request,movie_id):
         return HttpResponse(json.dumps(data))
 
 def login(request):
+
     if request.session.get('is_login',None):
         return redirect('/movies/')
 
@@ -121,6 +145,15 @@ def login(request):
                     request.session['user_name'] = user.name
 
                     # 生成个性化推荐列表
+
+                    global data, movie_dic, u_u_dic, u_nearest_k, user_item_matrix
+                    user_similaruser_value = cal_user_similarity(username, user_item_matrix, u_nearest_k)
+                    recommend_list = [i[0] for i in recommend(data, username,user_similaruser_value,12)]
+                    print('测试测试测试')
+                    print(user_similaruser_value)
+                    print(recommend_list)
+                    request.session['recommend_list'] = list(recommend_list.movie_id)
+
                     # usercf = UserCF_DB()
                     # recommend_list = usercf.run(request.session['user_id'],5,12)
                     # print(recommend_list)
@@ -134,6 +167,8 @@ def login(request):
 
     login_form = UserForm()
     return render(request, 'movies/login.html', locals())
+
+
 
 
 def logout(request):
@@ -185,3 +220,8 @@ def register(request):
                 return redirect('/movies/login')  # 自动跳转到登录页面
     register_form = RegisterForm()
     return render(request, 'movies/register.html', locals())
+
+
+
+
+
