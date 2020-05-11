@@ -19,5 +19,7 @@ urlpatterns = [
     path('search', views.search, name='search'),
 
     path('user/<str:user_id>', views.user, name='user'),
+
+    path('rec', views.rec, name='rec'),
 ]
 

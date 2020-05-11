@@ -8,7 +8,7 @@ class UserBasedCF():
     def __init__(self):
         # 找到与目标用户兴趣相似的20个用户，为其推荐10部电影
         self.n_sim_user = 20
-        self.n_rec_movie = 10
+        self.n_rec_movie = 20
 
         # 将数据集划分为训练集和测试集
         self.trainSet = {}
@@ -27,7 +27,7 @@ class UserBasedCF():
         trainSet_len = 0
         testSet_len = 0
         for line in self.load_file(filename):
-            user, movie, rating, timestamp = line.split(',')
+            timestamp, movie, rating, user = line.split(',')
             if random.random() < pivot:
                 self.trainSet.setdefault(user, {})
                 self.trainSet[user][movie] = rating
@@ -94,7 +94,9 @@ class UserBasedCF():
         watched_movies = self.trainSet[user]
 
         # v=similar user, wuv=similar factor
-        for v, wuv in sorted(self.user_sim_matrix[user].items(), key=itemgetter(1), reverse=True)[0:K]:
+        # print(user)
+        xxx = sorted(self.user_sim_matrix[user].items(), key=itemgetter(1), reverse=True)[0:K]
+        for v, wuv in xxx:
             for movie in self.trainSet[v]:
                 if movie in watched_movies:
                     continue
@@ -115,14 +117,15 @@ class UserBasedCF():
         all_rec_movies = set()
 
         for i, user, in enumerate(self.trainSet):
-            test_movies = self.testSet.get(user, {})
-            rec_movies = self.recommend(user)
-            for movie, w in rec_movies:
-                if movie in test_movies:
-                    hit += 1
-                all_rec_movies.add(movie)
-            rec_count += N
-            test_count += len(test_movies)
+            if user in self.user_sim_matrix:
+                test_movies = self.testSet.get(user, {})
+                rec_movies = self.recommend(user)
+                for movie, w in rec_movies:
+                    if movie in test_movies:
+                        hit += 1
+                    all_rec_movies.add(movie)
+                rec_count += N
+                test_count += len(test_movies)
 
         precision = hit / (1.0 * rec_count)
         recall = hit / (1.0 * test_count)
@@ -131,8 +134,42 @@ class UserBasedCF():
 
 
 if __name__ == '__main__':
-    rating_file = 'ml/ratings.csv'
+    rating_file = 'ml/rating.csv'
     userCF = UserBasedCF()
     userCF.get_dataset(rating_file)
     userCF.calc_user_sim()
-    userCF.evaluate()
+    for num in [1,5,8,10,20,40,50]: 
+        userCF.n_sim_user = num
+        print('最相似用户为{}'.format(num))
+        userCF.evaluate()
+
+
+
+
+
+def evaluate(n_rec_movie, trainSet, user_sim_matrix, testSet, n_sim_user, n_rec_movie, movie_count):
+    print("Evaluation start ...")
+    N = n_rec_movie
+    # 准确率和召回率
+    hit = 0
+    rec_count = 0
+    test_count = 0
+    # 覆盖率
+    all_rec_movies = set()
+
+    for i, user, in enumerate(trainSet):
+        if user in user_sim_matrix:
+            test_movies = testSet.get(user, {})
+            rec_movies = recommend(user, n_sim_user, n_rec_movie, trainSet, user_sim_matrix)
+            for movie, w in rec_movies:
+                if movie in test_movies:
+                    hit += 1
+                all_rec_movies.add(movie)
+            rec_count += N
+            test_count += len(test_movies)
+
+    precision = hit / (1.0 * rec_count)
+    recall = hit / (1.0 * test_count)
+    coverage = len(all_rec_movies) / (1.0 * movie_count)
+    print('precisioin=%.4f\trecall=%.4f\tcoverage=%.4f' % (precision, recall, coverage))
+

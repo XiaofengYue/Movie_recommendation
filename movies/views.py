@@ -5,26 +5,16 @@ import math, json
 # 导入数据
 from .models import Info,User,Rate
 from .form import UserForm,RegisterForm
-# from ml.engine import UserCF_DB
 
 ##########################################################################################
-from ml.test import load_data,create_movie_dic,create_user_user_dic,get_n_nearest_nei,create_user_item_matrix
-from ml.test import cal_user_similarity, recommend
-data = None
-movie_dic = None
-u_u_dic = None
-u_nerest_k = None
-user_item_matrix = None
 
-def start(k_nei):
-    global data, movie_dic, u_u_dic, u_nearest_k, user_item_matrix
-    data = load_data()
-    movie_dic = create_movie_dic(data)
-    u_u_dic = create_user_user_dic(movie_dic)
-    u_nearest_k = get_n_nearest_nei(u_u_dic, k=k_nei)
-    user_item_matrix = create_user_item_matrix(data)
+from ml.engine import get_dataset, calc_user_sim, evaluate, recommend
+trainSet, testSet = get_dataset(filename = 'ml/rating.csv', pivot=1)
+user_sim_matrix, movie_count = calc_user_sim(trainSet)
+n_sim_user = 10
+n_rec_movie = 20
 
-start(1)
+
 ##########################################################################################
 
 
@@ -35,14 +25,27 @@ def index(request):
     context = {'infos': Info.objects.all().order_by('-star_five')[:12],
                 'topten': Info.objects.all()[:10]}
     #已经登录
+    # if request.session.get('is_login',None):
+    #     print('主界面推荐内容')
+    #     data = []
+    #     print(request.session['recommend_list'] )
+    #     for i in request.session['recommend_list']:
+    #         data.append(Info.objects.get(id=i))
+    #     context['infos'] = data
+
     if request.session.get('is_login',None):
-        print('主界面推荐内容')
+        global n_sim_user
+        global n_rec_movie
+        global user_sim_matrix
+        global movie_count
+        global trainSet
+        global testSet
+        rec_list = recommend(request.session['user_id'], n_sim_user, n_rec_movie, trainSet, user_sim_matrix)
+        print('开始生成推荐列表')
         data = []
-        print(request.session['recommend_list'] )
-        for i in request.session['recommend_list']:
-            data.append(Info.objects.get(id=i))
+        for i in rec_list:
+            data.append(Info.objects.get(id=i[0]))
         context['infos'] = data
-        # context['infos'] = Info.objects.all().order_by('-star_four')[:12]
     return render(request, 'movies/base.html',context)    
 
 # 电影信息详情
@@ -146,18 +149,17 @@ def login(request):
 
                     # 生成个性化推荐列表
 
-                    global data, movie_dic, u_u_dic, u_nearest_k, user_item_matrix
-                    user_similaruser_value = cal_user_similarity(username, user_item_matrix, u_nearest_k)
-                    recommend_list = [i[0] for i in recommend(data, username,user_similaruser_value,12)]
-                    print('测试测试测试')
-                    print(user_similaruser_value)
-                    print(recommend_list)
-                    request.session['recommend_list'] = list(recommend_list.movie_id)
+                    # global n_sim_user
+                    # global n_rec_movie
+                    # global user_sim_matrix
+                    # global movie_count
+                    # global trainSet
+                    # global testSet
+                    # rec_list = recommend(user, n_sim_user, n_rec_movie, trainSet, user_sim_matrix)
+                    # print('开始生成推荐列表')
+                    # print(rec_list)
+                    # request.session['recommend_list'] = rec_list
 
-                    # usercf = UserCF_DB()
-                    # recommend_list = usercf.run(request.session['user_id'],5,12)
-                    # print(recommend_list)
-                    # request.session['recommend_list'] = list(recommend_list.movie_id)
                     return redirect('/movies/')
                 else:
                     message = "密码不正确！"
@@ -183,6 +185,18 @@ def logout(request):
     # del request.session['user_name']
     return redirect("/movies/")
 
+
+def rec(request):
+    global n_sim_user
+    global n_rec_movie
+    global user_sim_matrix
+    global movie_count
+    global trainSet
+    global testSet
+    rec_list = recommend('beijinglife', n_sim_user, n_rec_movie, trainSet, user_sim_matrix)
+    print('开始生成推荐列表')
+    rec_list = [i[0] for i in rec_list]
+    return HttpResponse(rec_list)
 
 def register(request):
     if request.session.get('is_login', None):

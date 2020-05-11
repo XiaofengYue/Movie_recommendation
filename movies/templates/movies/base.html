@@ -66,7 +66,7 @@
     {% block content %}
     {% if request.session.is_login %}
     {% else %}
-    <h1>你尚未登录，只能进行非个性化推荐！</h1>
+    <div>你尚未登录，只能进行非个性化推荐！</div>
     {% endif %}
 
     <div class="body">
